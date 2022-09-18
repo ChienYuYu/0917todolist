@@ -1,50 +1,65 @@
 <template>
-  <div class="container py-5">
-    <div class="row justify-content-center">
-      <div class="col-lg-6 d-flex">
-        <input type="text" class="form-control rounded-0" aria-label="輸入待辦"
-        placeholder="請輸入待辦" v-model="todoContent" @keyup.enter="addTodo">
-        <input type="submit" value="送出" class="btn btn-warning rounded-0"
-        @click="addTodo">
+  <div class="wrapper">
+    <div class="container py-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-6 d-flex">
+          <input
+            type="text"
+            class="form-control rounded-0"
+            aria-label="輸入待辦"
+            placeholder="請輸入待辦"
+            v-model="todoContent"
+            @keyup.enter="addTodo"
+          />
+          <input type="submit" value="送出" class="btn btn-warning rounded-0" @click="addTodo" />
+        </div>
       </div>
-    </div>
-    <div class="row justify-content-center">
-      <ul class="col-10 col-lg-6 m-0 list-unstyled d-flex justify-content-between">
-        <li class="">
-          <a href="#" class="d-inline-block p-2"
-          @click.prevent="status = 'all'"
-          :class="{select:status === 'all'}">
-            All
-          </a>
-        </li>
-        <li>
-          <a href="#" class="d-inline-block py-2"
-          @click.prevent="status = 'unfinish'"
-          :class="{select:status ==='unfinish'}">
-            UnFinish
-          </a>
-        </li>
-        <li>
-          <a href="#" class="d-inline-block py-2"
-          @click.prevent="status = 'finish'"
-          :class="{select:status === 'finish'}">
-            Finish
-          </a>
-        </li>
-      </ul>
-    </div>
-    <div class="row justify-content-center">
-      <ul class="list col-10 col-lg-8 list-unstyled">
-      <li v-for="(item, index) in filterTodo" :key="item.id">
-        <label :for="index" class="todo border d-flex justify-content-between p-2">
-          <input type="checkbox" :id="index" v-model="item.complete"
-          @change="doneTodo(item)">
-          <span>{{ item.content }}</span>
-          <a href="#" class="text-decoration-none"
-          @click.prevent="deleteTodo(index)">X</a>
-        </label>
-      </li>
-    </ul>
+      <div class="row justify-content-center">
+        <ul class="todo-status col-10 col-lg-6 m-0 list-unstyled d-flex justify-content-between">
+          <li class="">
+            <a
+              href="#"
+              class="d-inline-block p-2"
+              @click.prevent="status = 'all'"
+              :class="{ select: status === 'all' }"
+            >
+              All
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              class="d-inline-block py-2"
+              @click.prevent="status = 'unfinish'"
+              :class="{ select: status === 'unfinish' }"
+            >
+              UnFinish
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              class="d-inline-block py-2"
+              @click.prevent="status = 'finish'"
+              :class="{ select: status === 'finish' }"
+            >
+              Finish
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="row justify-content-center">
+        <ul class="list col-10 col-lg-8 list-unstyled">
+          <li v-for="(item, index) in filterTodo" :key="item.id">
+            <label :for="index" class="todo border d-flex justify-content-between p-2">
+              <input type="checkbox" :id="index" v-model="item.complete" @change="doneTodo(item)" />
+              <span>{{ item.content }}</span>
+              <a href="#" class="delete-todo text-decoration-none"
+              @click.prevent="deleteTodo(index)">X</a>
+            </label>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -101,13 +116,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  a{
-    text-decoration: none;
+  .wrapper{
+    background: #333;
+    height: 100vh;
+    overflow:scroll;
   }
-  .todo input:checked ~ span{
-    text-decoration: line-through;
-  }
-  .select{
-    color: #fa0;
-  }
+a {
+  text-decoration: none;
+}
+.todo-status a{
+  color: #fff;
+}
+.todo-status .select {
+  color: rgb(0, 255, 157);
+}
+.todo input:checked ~ span {
+  text-decoration: line-through;
+}
+.todo span {
+  color: #fa0;
+}
+.todo .delete-todo{
+  color: rgb(255, 56, 126);
+}
 </style>

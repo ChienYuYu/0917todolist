@@ -1,0 +1,113 @@
+<template>
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-6 d-flex">
+        <input type="text" class="form-control rounded-0" aria-label="輸入待辦"
+        placeholder="請輸入待辦" v-model="todoContent" @keyup.enter="addTodo">
+        <input type="submit" value="送出" class="btn btn-warning rounded-0"
+        @click="addTodo">
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <ul class="col-10 col-lg-6 m-0 list-unstyled d-flex justify-content-between">
+        <li class="">
+          <a href="#" class="d-inline-block p-2"
+          @click.prevent="status = 'all'"
+          :class="{select:status === 'all'}">
+            All
+          </a>
+        </li>
+        <li>
+          <a href="#" class="d-inline-block py-2"
+          @click.prevent="status = 'unfinish'"
+          :class="{select:status ==='unfinish'}">
+            UnFinish
+          </a>
+        </li>
+        <li>
+          <a href="#" class="d-inline-block py-2"
+          @click.prevent="status = 'finish'"
+          :class="{select:status === 'finish'}">
+            Finish
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="row justify-content-center">
+      <ul class="list col-10 col-lg-8 list-unstyled">
+      <li v-for="(item, index) in filterTodo" :key="item.id">
+        <label :for="index" class="todo border d-flex justify-content-between p-2">
+          <input type="checkbox" :id="index" v-model="item.complete"
+          @change="doneTodo(item)">
+          <span>{{ item.content }}</span>
+          <a href="#" class="text-decoration-none"
+          @click.prevent="deleteTodo(index)">X</a>
+        </label>
+      </li>
+    </ul>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      todoList: [],
+      todoContent: '',
+      status: 'all',
+    };
+  },
+  methods: {
+    addTodo() {
+      const time = new Date();
+      const newTodo = {
+        id: time.getTime(),
+        content: this.todoContent,
+        complete: false,
+      };
+      this.todoList.push(newTodo);
+      console.log(this.todoList);
+      this.todoContent = '';
+
+      this.updateLocalStorage();
+    },
+    deleteTodo(i) {
+      this.todoList.splice(i, 1);
+      this.updateLocalStorage();
+    },
+    doneTodo() {
+      this.updateLocalStorage();
+    },
+    updateLocalStorage() {
+      localStorage.setItem('todoList', JSON.stringify(this.todoList));
+    },
+  },
+  computed: {
+    filterTodo() {
+      if (this.status === 'unfinish') {
+        return this.todoList.filter((item) => item.complete === false);
+      }
+      if (this.status === 'finish') {
+        return this.todoList.filter((item) => item.complete === true);
+      }
+      return this.todoList;
+    },
+  },
+  mounted() {
+    this.todoList = JSON.parse(localStorage.getItem('todoList'));
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+  a{
+    text-decoration: none;
+  }
+  .todo input:checked ~ span{
+    text-decoration: line-through;
+  }
+  .select{
+    color: #fa0;
+  }
+</style>
