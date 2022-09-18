@@ -37,7 +37,8 @@
       <ul class="list col-10 col-lg-8 list-unstyled">
       <li v-for="(item, index) in filterTodo" :key="item.id">
         <label :for="index" class="todo border d-flex justify-content-between p-2">
-          <input type="checkbox" :id="index" v-model="item.complete">
+          <input type="checkbox" :id="index" v-model="item.complete"
+          @change="doneTodo(item)">
           <span>{{ item.content }}</span>
           <a href="#" class="text-decoration-none"
           @click.prevent="deleteTodo(index)">X</a>
@@ -68,9 +69,18 @@ export default {
       this.todoList.push(newTodo);
       console.log(this.todoList);
       this.todoContent = '';
+
+      this.updateLocalStorage();
     },
     deleteTodo(i) {
       this.todoList.splice(i, 1);
+      this.updateLocalStorage();
+    },
+    doneTodo() {
+      this.updateLocalStorage();
+    },
+    updateLocalStorage() {
+      localStorage.setItem('todoList', JSON.stringify(this.todoList));
     },
   },
   computed: {
@@ -83,6 +93,9 @@ export default {
       }
       return this.todoList;
     },
+  },
+  mounted() {
+    this.todoList = JSON.parse(localStorage.getItem('todoList'));
   },
 };
 </script>
