@@ -109,6 +109,8 @@ export default {
     },
   },
   created() {
+    // 瀏覽器首次載入會沒有localstorage資料會報錯誤，
+    // 判斷如果為空就創立一個
     if (localStorage.getItem('todoList') === null) {
       localStorage.setItem('todoList', JSON.stringify(this.todoList));
     }
