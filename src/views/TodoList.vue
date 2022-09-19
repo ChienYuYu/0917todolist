@@ -77,6 +77,10 @@ export default {
   },
   methods: {
     addTodo() {
+      if (this.todoContent.trim() === '') {
+        alert('請輸入待辦內容');
+      }
+
       const time = new Date();
       const newTodo = {
         id: time.getTime(),
