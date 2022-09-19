@@ -24,7 +24,7 @@
               @click.prevent="status = 'all'"
               :class="{ select: status === 'all' }"
             >
-              全部
+              全部 {{ todoList.length }}
             </a>
           </li>
           <li>
@@ -34,7 +34,7 @@
               @click.prevent="status = 'unfinish'"
               :class="{ select: status === 'unfinish' }"
             >
-              待完成
+              待完成 ({{ unfinishNum.length }})
             </a>
           </li>
           <li>
@@ -44,7 +44,7 @@
               @click.prevent="status = 'finish'"
               :class="{ select: status === 'finish' }"
             >
-              已完成
+              已完成 ({{ finishedNum.length }})
             </a>
           </li>
         </ul>
@@ -61,6 +61,11 @@
             </label>
           </li>
         </ul>
+        <h3 class="text-light py-5" v-if="todoList.length === 0">尚無待辦事項</h3>
+        <h3 class="text-light py-5"
+        v-else-if="status === 'unfinish' && unfinishNum.length === 0">尚無待完成事項</h3>
+        <h3 class="text-light py-5"
+        v-else-if="status === 'finish' && finishedNum.length === 0">尚無完成事項</h3>
       </div>
     </div>
   </div>
@@ -79,18 +84,20 @@ export default {
     addTodo() {
       if (this.todoContent.trim() === '') {
         alert('請輸入待辦內容');
+        this.todoContent = '';
+      } else {
+        const time = new Date();
+        const newTodo = {
+          id: time.getTime(),
+          content: this.todoContent,
+          complete: false,
+        };
+        this.todoList.push(newTodo);
+        this.todoContent = '';
+        this.status = 'all';
+
+        this.updateLocalStorage();
       }
-
-      const time = new Date();
-      const newTodo = {
-        id: time.getTime(),
-        content: this.todoContent,
-        complete: false,
-      };
-      this.todoList.push(newTodo);
-      this.todoContent = '';
-
-      this.updateLocalStorage();
     },
     deleteTodo(i) {
       this.todoList.splice(i, 1);
@@ -113,6 +120,14 @@ export default {
       }
       return this.todoList;
     },
+
+    unfinishNum() {
+      return this.todoList.filter((item) => item.complete === false);
+    },
+
+    finishedNum() {
+      return this.todoList.filter((item) => item.complete === true);
+    },
   },
   created() {
     // 瀏覽器首次載入會沒有localstorage資料會報錯誤，
@@ -132,6 +147,8 @@ export default {
   background: #333;
   height: 100vh;
   overflow:scroll;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont,
+  'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 a {
   text-decoration: none;
@@ -140,7 +157,6 @@ a {
 .inputbar{
   border-radius: .75rem 0 0 .75rem;
   background: #222;
-  // border:1px solid #fa0;
   border: 1px solid #222 ;
   outline: none;
   color: #fff;
