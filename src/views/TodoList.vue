@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="container py-5">
       <div class="row justify-content-center">
-        <div class="col-11 col-lg-6 d-flex justify-content-center mb-3">
+        <div class="col-11 col-lg-6 d-flex justify-content-center mb-4">
           <input
             type="text"
             class="inputbar form-control"
@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="row justify-content-center">
-        <ul class="todo-status col-10 col-lg-6 m-0 list-unstyled d-flex justify-content-between">
+        <ul class="todo-status col-10 col-lg-6 mb-4 list-unstyled d-flex justify-content-between">
           <li class="">
             <a
               href="#"
