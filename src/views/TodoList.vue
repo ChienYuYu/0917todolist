@@ -54,7 +54,7 @@
           <li v-for="(item, index) in filterTodo" :key="item.id">
             <label :for="index" class="todo-item border d-flex justify-content-between p-3">
               <input class="todo-check" type="checkbox" :id="index"
-              v-model="item.complete" @change="doneTodo(item)" />
+              v-model="item.complete" @change="updateLocalStorage" />
               <span class="text-truncate px-3">{{ item.content }}</span>
               <a href="#" class="delete-todo"
               @click.prevent="deleteTodo(index)">X</a>
@@ -101,9 +101,6 @@ export default {
     },
     deleteTodo(i) {
       this.todoList.splice(i, 1);
-      this.updateLocalStorage();
-    },
-    doneTodo() {
       this.updateLocalStorage();
     },
     updateLocalStorage() {
