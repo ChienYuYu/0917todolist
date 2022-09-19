@@ -92,7 +92,7 @@ export default {
           content: this.todoContent,
           complete: false,
         };
-        this.todoList.push(newTodo);
+        this.todoList.unshift(newTodo);
         this.todoContent = '';
         this.status = 'all';
 
