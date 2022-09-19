@@ -2,16 +2,17 @@
   <div class="wrapper">
     <div class="container py-5">
       <div class="row justify-content-center">
-        <div class="col-lg-6 d-flex">
+        <div class="col-11 col-lg-6 d-flex justify-content-center mb-3">
           <input
             type="text"
-            class="form-control rounded-0"
+            class="inputbar form-control"
             aria-label="輸入待辦"
             placeholder="請輸入待辦"
             v-model="todoContent"
             @keyup.enter="addTodo"
           />
-          <input type="submit" value="送出" class="btn btn-warning rounded-0" @click="addTodo" />
+          <input type="submit" value="新增" class="submitbtn btn"
+          :class="{'disabled': todoContent === ''}" @click="addTodo" />
         </div>
       </div>
       <div class="row justify-content-center">
@@ -23,7 +24,7 @@
               @click.prevent="status = 'all'"
               :class="{ select: status === 'all' }"
             >
-              All
+              全部
             </a>
           </li>
           <li>
@@ -33,7 +34,7 @@
               @click.prevent="status = 'unfinish'"
               :class="{ select: status === 'unfinish' }"
             >
-              UnFinish
+              待完成
             </a>
           </li>
           <li>
@@ -43,18 +44,19 @@
               @click.prevent="status = 'finish'"
               :class="{ select: status === 'finish' }"
             >
-              Finish
+              已完成
             </a>
           </li>
         </ul>
       </div>
       <div class="row justify-content-center">
-        <ul class="list col-10 col-lg-8 list-unstyled">
+        <ul class="list col-11 col-lg-8 list-unstyled">
           <li v-for="(item, index) in filterTodo" :key="item.id">
-            <label :for="index" class="todo border d-flex justify-content-between p-2">
-              <input type="checkbox" :id="index" v-model="item.complete" @change="doneTodo(item)" />
-              <span>{{ item.content }}</span>
-              <a href="#" class="delete-todo text-decoration-none"
+            <label :for="index" class="todo-item border d-flex justify-content-between p-3">
+              <input class="todo-check" type="checkbox" :id="index"
+              v-model="item.complete" @change="doneTodo(item)" />
+              <span class="text-truncate px-3">{{ item.content }}</span>
+              <a href="#" class="delete-todo"
               @click.prevent="deleteTodo(index)">X</a>
             </label>
           </li>
@@ -122,27 +124,57 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .wrapper{
-    background: #333;
-    height: 100vh;
-    overflow:scroll;
-  }
+.wrapper{
+  background: #333;
+  height: 100vh;
+  overflow:scroll;
+}
 a {
   text-decoration: none;
 }
-.todo-status a{
+// -------------------
+.inputbar{
+  border-radius: .75rem 0 0 .75rem;
+  background: #222;
+  // border:1px solid #fa0;
+  border: 1px solid #222 ;
+  outline: none;
   color: #fff;
+  text-align: center;
+  width: 40%;
+  transition: .5s;
+  &:focus{
+    outline: none;
+    box-shadow: none;
+    width:100%;
+  }
 }
-.todo-status .select {
-  color: rgb(0, 255, 157);
+.submitbtn{
+  background: #fa0;
+  color: #fff;
+  border-radius: 0 .75rem .75rem 0;
+  border: none;
+  &:hover{
+    background: rgb(250, 184, 53);
+  }
 }
-.todo input:checked ~ span {
+// -------------------
+.todo-status{
+  a{
+    color: #fff;
+  }
+  .select{
+    color: rgb(0, 255, 157);
+  }
+}
+// -------------------
+.todo-item input:checked ~ span {
   text-decoration: line-through;
 }
-.todo span {
+.todo-item span {
   color: #fa0;
 }
-.todo .delete-todo{
+.todo-item .delete-todo{
   color: rgb(255, 56, 126);
 }
 </style>
