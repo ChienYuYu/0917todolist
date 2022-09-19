@@ -24,7 +24,7 @@
               @click.prevent="status = 'all'"
               :class="{ select: status === 'all' }"
             >
-              全部 {{ todoList.length }}
+              全部 ({{ todoList.length }})
             </a>
           </li>
           <li>
