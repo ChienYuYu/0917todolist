@@ -82,7 +82,6 @@ export default {
         complete: false,
       };
       this.todoList.push(newTodo);
-      console.log(this.todoList);
       this.todoContent = '';
 
       this.updateLocalStorage();
@@ -108,6 +107,11 @@ export default {
       }
       return this.todoList;
     },
+  },
+  created() {
+    if (localStorage.getItem('todoList') === null) {
+      localStorage.setItem('todoList', JSON.stringify(this.todoList));
+    }
   },
   mounted() {
     this.todoList = JSON.parse(localStorage.getItem('todoList'));
