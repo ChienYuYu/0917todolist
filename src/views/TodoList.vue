@@ -111,8 +111,10 @@ export default {
     },
     editTodo(item, i) {
       const editTodo = prompt('編輯待辦', item.content);
-      this.todoList[i].content = editTodo;
-      this.updateLocalStorage();
+      if (editTodo) {
+        this.todoList[i].content = editTodo;
+        this.updateLocalStorage();
+      }
     },
     updateLocalStorage() {
       localStorage.setItem('todoList', JSON.stringify(this.todoList));
