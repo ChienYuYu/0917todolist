@@ -100,8 +100,10 @@ export default {
       }
     },
     deleteTodo(i) {
-      this.todoList.splice(i, 1);
-      this.updateLocalStorage();
+      if (window.confirm('確認刪除?')) {
+        this.todoList.splice(i, 1);
+        this.updateLocalStorage();
+      }
     },
     updateLocalStorage() {
       localStorage.setItem('todoList', JSON.stringify(this.todoList));
