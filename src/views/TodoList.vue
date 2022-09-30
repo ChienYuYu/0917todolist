@@ -52,11 +52,15 @@
       <div class="row justify-content-center">
         <ul class="list col-11 col-lg-8 list-unstyled">
           <li v-for="(item, index) in filterTodo" :key="item.id">
-            <label :for="index" class="todo-item border d-flex justify-content-between p-3">
+            <label :for="index" class="todo-item border d-flex ps-3">
               <input class="todo-check" type="checkbox" :id="index"
               v-model="item.complete" @change="updateLocalStorage" />
-              <span class="text-truncate px-3">{{ item.content }}</span>
-              <a href="#" class="delete-todo"
+              <span class="text-truncate p-3 mx-auto">{{ item.content }}</span>
+              <a href="#" class="ms-auto p-3" @click.prevent="editTodo(item, index)">
+                <i class="bi bi-pencil-fill edit-icon"/>
+                <span class="d-none">1</span>
+              </a>
+              <a href="#" class="delete-todo p-3"
               @click.prevent="deleteTodo(index)">X</a>
             </label>
           </li>
@@ -104,6 +108,11 @@ export default {
         this.todoList.splice(i, 1);
         this.updateLocalStorage();
       }
+    },
+    editTodo(item, i) {
+      const editTodo = prompt('編輯待辦', item.content);
+      this.todoList[i].content = editTodo;
+      this.updateLocalStorage();
     },
     updateLocalStorage() {
       localStorage.setItem('todoList', JSON.stringify(this.todoList));
@@ -187,11 +196,17 @@ a {
   }
 }
 // -------------------
+.todo-item input{
+  transform: scale(130%);
+}
 .todo-item input:checked ~ span {
   text-decoration: line-through;
 }
 .todo-item span {
   color: #fa0;
+}
+.todo-item .edit-icon{
+  color: #ddd;
 }
 .todo-item .delete-todo{
   color: rgb(255, 56, 126);
