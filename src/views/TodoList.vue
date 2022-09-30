@@ -55,7 +55,7 @@
             <label :for="index" class="todo-item border d-flex ps-3">
               <input class="todo-check" type="checkbox" :id="index"
               v-model="item.complete" @change="updateLocalStorage" />
-              <span class="text-truncate p-3 mx-auto">{{ item.content }}</span>
+              <span class="text-truncate p-3 ms-auto">{{ item.content }}</span>
               <a href="#" class="ms-auto p-3" @click.prevent="editTodo(item, index)">
                 <i class="bi bi-pencil-fill edit-icon"/>
                 <span class="d-none">1</span>
