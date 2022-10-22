@@ -41,6 +41,7 @@ export default {
     // 取得狀態 ， TodoStatus.vue mitt過來的
     this.$emitter.on('status', (data) => {
       this.status = data;
+      // console.log('測試測試', data);
     });
   },
   computed: {
@@ -68,6 +69,8 @@ export default {
       }
     },
   },
+  watch: {
+  },
 };
 </script>
 
@@ -90,10 +93,10 @@ export default {
 
   // 動畫-----------------------------
   .v-enter-active{
-    animation: in-out 1s;
+    animation: in-out .6s;
   }
   .v-leave-active{
-    animation: in-out 1s reverse;
+    animation: in-out .6s reverse;
   }
 
   @keyframes in-out {
@@ -104,4 +107,5 @@ export default {
       transform: translateX(0);
     }
   }
+
 </style>

@@ -53,8 +53,9 @@ export default {
     // 這裡接收，將狀態改寫 'all'
     this.$emitter.on('defaultStatus', (data) => {
       this.status = data;
+      this.sendStatus(); // 當前狀態mitt到 ListView.vue
+      // ↑ 輸入框新增 todo後將 status傳到 ListView.vue
     });
-    this.sendStatus(); // 當前狀態mitt到 ListView.vue
   },
   computed: {
     unfinishNum() {
