@@ -2,20 +2,22 @@
   <div class="container">
     <div class="row justify-content-center">
       <ul class="list col-11 col-lg-8 list-unstyled">
-        <li v-for="(item, index) in filterTodo" :key="item.id">
-          <label :for="index" class="todo-item border d-flex ps-3">
-            <input class="todo-check" type="checkbox" :id="index" v-model="item.complete"
-              @change="updateLocalStorage" />
-            <span class="text-truncate p-3 ms-auto">{{ item.content }}</span>
-            <a href="#" class="ms-auto p-3" @click.prevent="editTodo(item, index)">
-              <i class="bi bi-pencil-fill edit-icon" />
-              <span class="d-none">1</span>
-              <!-- ↑隨便寫個東西才不會報錯 用d-none隱藏 -->
-            </a>
-            <a href="#" class="delete-todo p-3"
-            @click.prevent="removeTodo(index)">X</a>
-          </label>
-        </li>
+        <transition-group>
+          <li v-for="(item, index) in filterTodo" :key="item.id">
+            <label :for="index" class="todo-item border d-flex ps-3">
+              <input class="todo-check" type="checkbox" :id="index" v-model="item.complete"
+                @change="updateLocalStorage" />
+              <span class="text-truncate p-3 ms-auto">{{ item.content }}</span>
+              <a href="#" class="ms-auto p-3" @click.prevent="editTodo(item, index)">
+                <i class="bi bi-pencil-fill edit-icon" />
+                <span class="d-none">1</span>
+                <!-- ↑隨便寫個東西才不會報錯 用d-none隱藏 -->
+              </a>
+              <a href="#" class="delete-todo p-3"
+              @click.prevent="removeTodo(index)">X</a>
+            </label>
+          </li>
+        </transition-group>
       </ul>
       <h3 class="text-light py-5"
         v-if="todoList.length === 0">尚無待辦事項</h3>
@@ -84,5 +86,22 @@ export default {
   }
   .todo-item .delete-todo{
     color: rgb(255, 56, 126);
+  }
+
+  // 動畫-----------------------------
+  .v-enter-active{
+    animation: in-out 1s;
+  }
+  .v-leave-active{
+    animation: in-out 1s reverse;
+  }
+
+  @keyframes in-out {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(0);
+    }
   }
 </style>
