@@ -1,11 +1,8 @@
 <template>
   <div class="wrapper">
-    <InputTodo :addTodo = addTodo />
-    <TodoStatus :todoList = todoList />
-    <ListView :todoList = todoList
-      :deleteTodo = deleteTodo
-      :updateTodo = updateTodo
-      :updateLocalStorage = updateLocalStorage />
+    <InputTodo />
+    <TodoStatus />
+    <ListView />
   </div>
 </template>
 
@@ -20,37 +17,11 @@ export default {
     TodoStatus,
     ListView,
   },
-  data() {
-    return {
-      todoList: [],
-    };
-  },
-  methods: {
-    addTodo(newTodo) {
-      this.todoList.unshift(newTodo);
-      this.updateLocalStorage();
-    },
-    deleteTodo(i) {
-      this.todoList.splice(i, 1);
-      this.updateLocalStorage();
-    },
-    updateTodo(editTodo, i) {
-      this.todoList[i].content = editTodo;
-      this.updateLocalStorage();
-    },
-    updateLocalStorage() {
-      localStorage.setItem('todoList', JSON.stringify(this.todoList));
-    },
-  },
   created() {
-    // 瀏覽器首次載入會沒有localstorage資料會報錯誤，
-    // 判斷如果為空就創立一個
-    if (localStorage.getItem('todoList') === null) {
-      localStorage.setItem('todoList', JSON.stringify(this.todoList));
-    }
+    this.$store.commit('initLocalStorage');
   },
   mounted() {
-    this.todoList = JSON.parse(localStorage.getItem('todoList'));
+    this.$store.commit('transformData');
   },
 };
 </script>

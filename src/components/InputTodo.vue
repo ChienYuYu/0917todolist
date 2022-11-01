@@ -23,15 +23,10 @@
 <script>
 
 export default {
-  props: ['addTodo'],
   data() {
     return {
       todoContent: '',
-      tempArr: [],
     };
-  },
-  created() {
-    this.tempArr = this.todoList;
   },
   methods: {
     add() {
@@ -39,15 +34,9 @@ export default {
         alert('請輸入待辦內容');
         this.todoContent = '';
       } else {
-        const time = new Date();
-        const newTodo = {
-          id: time.getTime(),
-          content: this.todoContent,
-          complete: false,
-        };
-        this.addTodo(newTodo);
+        this.$store.commit('addTodo', this.todoContent);
         this.todoContent = '';
-        this.$emitter.emit('defaultStatus', 'all'); // mitt到 TodoStatus.vue
+        this.$store.commit('updateLocalStorage');
       }
     },
   },

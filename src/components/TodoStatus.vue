@@ -2,37 +2,34 @@
   <div class="container">
     <div class="row justify-content-center">
       <ul class="todo-status col-10 col-lg-6 mb-4 list-unstyled d-flex    justify-content-between">
-        <li class="">
+        <li>
           <a
             href="#"
             class="d-inline-block p-2"
-            @click.prevent="status = 'all'"
-            @click="sendStatus"
+            @click.prevent="sendStatus('all')"
             :class="{ select: status === 'all' }"
             >
-            全部 ({{ todoList.length }})
+            全部 ({{allTodo}})
           </a>
         </li>
         <li>
           <a
             href="#"
             class="d-inline-block py-2"
-            @click.prevent="status = 'unfinish'"
-            @click="sendStatus"
-            :class="{ select: status === 'unfinish' }"
+            @click.prevent="sendStatus('unDone')"
+            :class="{ select: status === 'unDone' }"
             >
-            待完成 ({{ unfinishNum.length }})
+            待完成 ({{unDoneTodo}})
           </a>
         </li>
         <li>
           <a
             href="#"
             class="d-inline-block py-2"
-            @click.prevent="status = 'finish'"
-            @click="sendStatus"
-            :class="{ select: status === 'finish' }"
+            @click.prevent="sendStatus('done')"
+            :class="{ select: status === 'done' }"
             >
-            已完成 ({{ finishedNum.length }})
+            已完成 ({{doneTodo}})
           </a>
         </li>
       </ul>
@@ -42,33 +39,26 @@
 
 <script>
 export default {
-  props: ['todoList'],
   data() {
     return {
       status: 'all',
     };
   },
-  mounted() {
-    // InputTodo.vue mitt過來的
-    // 這裡接收，將狀態改寫 'all'
-    this.$emitter.on('defaultStatus', (data) => {
-      this.status = data;
-      this.sendStatus(); // 當前狀態mitt到 ListView.vue
-      // ↑ 輸入框新增 todo後將 status傳到 ListView.vue
-    });
-  },
   computed: {
-    unfinishNum() {
-      return this.todoList.filter((item) => item.complete === false);
+    allTodo() {
+      return this.$store.state.todos.length;
     },
-
-    finishedNum() {
-      return this.todoList.filter((item) => item.complete === true);
+    unDoneTodo() {
+      return this.$store.getters.unDoneTodo.length;
+    },
+    doneTodo() {
+      return this.$store.getters.doneTodo.length;
     },
   },
   methods: {
-    sendStatus() {
-      this.$emitter.emit('status', this.status); // mitt到 ListView.vue
+    sendStatus(status) {
+      this.status = status;
+      this.$store.commit('statusChange', status);
     },
   },
 };
