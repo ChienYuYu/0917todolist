@@ -33,13 +33,11 @@ export default {
     const store = useStore();
 
     const filterTodo = computed(() => {
-      if (store.state.status === 'unDone') {
-        return store.getters.unDoneTodo;
+      switch (store.state.status) {
+        case 'unDone': return store.getters.unDoneTodo;
+        case 'done': return store.getters.doneTodo;
+        default: return store.state.todos;
       }
-      if (store.state.status === 'done') {
-        return store.getters.doneTodo;
-      }
-      return store.state.todos;
     });
 
     const noTodo = computed(() => {
