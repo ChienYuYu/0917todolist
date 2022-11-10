@@ -38,28 +38,30 @@
 </template>
 
 <script>
+import { ref, computed } from 'vue';
+import { useStore } from 'vuex';
+
 export default {
-  data() {
-    return {
-      status: 'all',
+  setup() {
+    const store = useStore();
+    const status = ref('all');
+
+    const allTodo = computed(() => store.state.todos.length);
+    const unDoneTodo = computed(() => store.getters.unDoneTodo.length);
+    const doneTodo = computed(() => store.getters.doneTodo.length);
+
+    const sendStatus = (newStatus) => {
+      status.value = newStatus;
+      store.commit('statusChange', newStatus);
     };
-  },
-  computed: {
-    allTodo() {
-      return this.$store.state.todos.length;
-    },
-    unDoneTodo() {
-      return this.$store.getters.unDoneTodo.length;
-    },
-    doneTodo() {
-      return this.$store.getters.doneTodo.length;
-    },
-  },
-  methods: {
-    sendStatus(status) {
-      this.status = status;
-      this.$store.commit('statusChange', status);
-    },
+
+    return {
+      status,
+      allTodo,
+      unDoneTodo,
+      doneTodo,
+      sendStatus,
+    };
   },
 };
 </script>

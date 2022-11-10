@@ -7,6 +7,8 @@
 </template>
 
 <script>
+import { onMounted } from 'vue';
+import { useStore } from 'vuex';
 import InputTodo from '../components/InputTodo.vue';
 import TodoStatus from '../components/TodoStatus.vue';
 import ListView from '../components/ListView.vue';
@@ -17,11 +19,13 @@ export default {
     TodoStatus,
     ListView,
   },
-  created() {
-    this.$store.commit('initLocalStorage');
-  },
-  mounted() {
-    this.$store.commit('transformData');
+  setup() {
+    const store = useStore();
+    store.commit('initLocalStorage');
+
+    onMounted(() => {
+      store.commit('transformData');
+    });
   },
 };
 </script>
@@ -30,7 +34,7 @@ export default {
 .wrapper{
   background: #333;
   height: 100vh;
-  overflow:scroll;
+  overflow:auto;
   font-family: system-ui, -apple-system, BlinkMacSystemFont,
   'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }

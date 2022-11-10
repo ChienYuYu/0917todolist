@@ -24,50 +24,62 @@
     </div>
   </div>
 </template>
-
 <script>
+import { computed } from 'vue';
+import { useStore } from 'vuex';
+
 export default {
-  computed: {
-    filterTodo() {
-      if (this.$store.state.status === 'unDone') {
-        return this.$store.getters.unDoneTodo;
+  setup() {
+    const store = useStore();
+
+    const filterTodo = computed(() => {
+      if (store.state.status === 'unDone') {
+        return store.getters.unDoneTodo;
       }
-      if (this.$store.state.status === 'done') {
-        return this.$store.getters.doneTodo;
+      if (store.state.status === 'done') {
+        return store.getters.doneTodo;
       }
-      return this.$store.state.todos;
-    },
-    noTodo() {
-      if (this.$store.state.todos.length === 0) {
+      return store.state.todos;
+    });
+
+    const noTodo = computed(() => {
+      if (store.state.todos.length === 0) {
         return '尚無待辦事項';
       }
-      if (this.$store.state.status === 'unDone' && this.$store.getters.unDoneTodo.length === 0) {
+      if (store.state.status === 'unDone' && store.getters.unDoneTodo.length === 0) {
         return '尚無待完成事項';
       }
-      if (this.$store.state.status === 'done' && this.$store.getters.doneTodo.length === 0) {
+      if (store.state.status === 'done' && store.getters.doneTodo.length === 0) {
         return '尚無完成事項';
       }
       return '';
-    },
-  },
-  methods: {
-    removeTodo(id) {
+    });
+
+    function removeTodo(id) {
       if (window.confirm('確認刪除?')) {
-        this.$store.commit('deleteTodo', id);
-        this.$store.commit('updateLocalStorage');
+        store.commit('deleteTodo', id);
+        store.commit('updateLocalStorage');
       }
-    },
-    editTodo(item, id) {
-      const editTodo = prompt('編輯待辦', item.content);
-      if (editTodo) {
-        this.$store.commit('editTodo', { editTodo, id });
+    }
+    function editTodo(item, id) {
+      const newTodo = prompt('編輯待辦', item.content);
+      if (newTodo) {
+        store.commit('editTodo', { newTodo, id });
       }
-      this.$store.commit('updateLocalStorage');
-    },
-    checkDone(id) {
-      this.$store.commit('doneSwitch', id);
-      this.$store.commit('updateLocalStorage');
-    },
+      store.commit('updateLocalStorage');
+    }
+    function checkDone(id) {
+      store.commit('doneSwitch', id);
+      store.commit('updateLocalStorage');
+    }
+
+    return {
+      filterTodo,
+      noTodo,
+      removeTodo,
+      editTodo,
+      checkDone,
+    };
   },
 };
 </script>

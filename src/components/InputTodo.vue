@@ -21,24 +21,29 @@
 </template>
 
 <script>
+import { ref } from 'vue';
+import { useStore } from 'vuex';
 
 export default {
-  data() {
-    return {
-      todoContent: '',
-    };
-  },
-  methods: {
-    add() {
+  setup() {
+    const store = useStore();
+
+    const todoContent = ref('');
+    function add() {
       if (this.todoContent.trim() === '') {
         alert('請輸入待辦內容');
-        this.todoContent = '';
+        todoContent.value = '';
       } else {
-        this.$store.commit('addTodo', this.todoContent);
-        this.todoContent = '';
-        this.$store.commit('updateLocalStorage');
+        store.commit('addTodo', this.todoContent);
+        todoContent.value = '';
+        store.commit('updateLocalStorage');
       }
-    },
+    }
+
+    return {
+      todoContent,
+      add,
+    };
   },
 };
 </script>

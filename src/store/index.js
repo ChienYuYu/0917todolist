@@ -44,8 +44,8 @@ export default createStore({
     },
 
     // -----TodoStatus.vue相關 ↓-----------------------
-    statusChange(state, status) {
-      state.status = status;
+    statusChange(state, newStatus) {
+      state.status = newStatus;
     },
     // -----ListView.vue相關 ↓-------------------------
     deleteTodo(state, id) {
@@ -53,7 +53,7 @@ export default createStore({
     },
     editTodo(state, todo) {
       const i = state.todos.findIndex((item) => item.id === todo.id);
-      state.todos[i].content = todo.editTodo;
+      state.todos[i].content = todo.newTodo;
     },
     doneSwitch(state, id) {
       const i = state.todos.findIndex((item) => item.id === id);
